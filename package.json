@@ -1,0 +1,18 @@
+{
+  "name": "balances",
+  "version": "1.0.0",
+  "description": "aggregates balances from diff exchanges in one ascii table",
+  "main": "balances.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Emanuel Lauria",
+  "license": "GPL-3.0-or-later",
+  "dependencies": {
+    "ccxt": "^1.41.5",
+    "chalk": "^4.1.0",
+    "coingeckojs": "^1.0.7",
+    "dotenv": "^8.2.0",
+    "table": "^6.0.7"
+  }
+}
