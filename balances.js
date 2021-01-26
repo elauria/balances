@@ -119,20 +119,21 @@ const columns = [
 ].filter(validateColumn)
 
 const getBalances = async () => {
-  let balances = [];
+  let balances = {};
   for (const e of exchanges) {
     const exchange = getExchange(e.id, e.params);
     let { info, ...result } = await exchange.fetchBalance();
-    balances.push(...Object
+    const b = Object
       .keys(result)
       .filter(symbol => !!result[symbol].total)
-      .map(symbol => ({
-         symbol: symbol.toLowerCase(),
-         exchange: e.id,
-         balance: result[symbol].total
-      })));
+      .map(symbol => {
+        symbol = symbol.toLowerCase()
+        if (!balances[symbol])
+          balances[symbol] = {symbol, balance: 0};
+        balances[symbol].balance += result[symbol.toUpperCase()].total
+      });
   }
-  return balances;
+  return Object.keys(balances).map(b => balances[b]);
 }
 
 const addCoingeckoData = async (balances) => {
@@ -142,7 +143,7 @@ const addCoingeckoData = async (balances) => {
     for (const balance of balances) {
       balance.coingecko = data.filter(c => c.symbol === balance.symbol)[0]
       if (!balance.coingecko)
-        throw `Couln't find Coingeck data for ${balance.symbol}`
+        throw `Couldn't find Coingeck data for ${balance.symbol}`
     }
     const usdPrices = await CoinGeckoClient.coins.markets({
       ids: balances.map(c => c.coingecko.id),
