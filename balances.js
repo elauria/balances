@@ -37,17 +37,18 @@ const format = (amount, precision = 0.01, color = false) => {
 const getHeader = (columns) =>
   columns.map(c => c.label);
 
-const getFooter = (columns, rows, balances) => {
+const getFooter = async (columns, rows, balances) => {
   const total = [];
-  const btcPrice = balances
-    .filter(b => b.symbol === 'btc')
-    .pop()
-    .coingecko
-    .usd
-    .current_price;
+  const CoinGeckoClient = new CoinGecko();
+  const btcPrice = await CoinGeckoClient.simple.price({
+    ids: 'bitcoin',
+    vs_currencies: 'usd'
+  })
   const usd = ['usd', 0, ...columns.slice(2).fill('', 0, columns.length-2)];
   for (const b of balances.filter((s) => !validateSymbol(s))) {
     usd[1] = format(usd[1]+b.balance);
+    usd[2] = usd[1];
+    usd[3] = format(usd[1]/btcPrice.data.bitcoin.usd, 0.00000001);
   }
   for (const i in columns) {
     if (columns[i].total) {
@@ -56,9 +57,9 @@ const getFooter = (columns, rows, balances) => {
       total.push('');
     }
   }
-  total[0] = 'Total';
+  total[0] = `Total (${rows.length})`;
   total[2] = format(total[2]+usd[1]);
-  total[3] = format(total[2]/btcPrice, 0.000001)
+  total[3] = format(total[2]/btcPrice.data.bitcoin.usd, 0.000001)
   total[5] = '% Risked:';
   total[6] = format(100/total[2]*(total[2]-usd[1]));
   return [usd, total];
@@ -77,7 +78,7 @@ const columns = [
     label: 'Balance',
     private: true,
     data: (b) => b.balance,
-    format: (c) => c
+    format: (c) => format(c, 0.00000001)
   },
   {
     id: 'usdValue',
@@ -118,6 +119,12 @@ const columns = [
   },
 ].filter(validateColumn)
 
+const coinFilter = (c) => {
+  if(balance.symbol === 'comp')
+    return c.id === "compound-governance-token"
+  return c.symbol === balance.symbol
+}
+
 const getBalances = async () => {
   let balances = {};
   for (const e of exchanges) {
@@ -141,7 +148,7 @@ const addCoingeckoData = async (balances) => {
     const CoinGeckoClient = new CoinGecko();
     const {data} = await CoinGeckoClient.coins.list();
     for (const balance of balances) {
-      balance.coingecko = data.filter(c => c.symbol === balance.symbol)[0]
+      balance.coingecko = data.filter(coinFilter)[0]
       if (!balance.coingecko)
         throw `Couldn't find Coingeck data for ${balance.symbol}`
     }
@@ -214,7 +221,7 @@ const main = async () => {
       ...rows,
     ];
     if (!settings.hideBalances) {
-      let footer = getFooter(columns, rows, balances);
+      let footer = await getFooter(columns, rows, balances);
       data = [...data, ...footer];
     }
     console.log(table(data));
