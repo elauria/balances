@@ -3,6 +3,7 @@ const { getExchange } = require("./ccxt");
 const { table } = require("table");
 const CoinGecko = require("coingeckojs");
 const chalk = require("chalk");
+const pairs = require("./pairs.json")
 
 const args = process.argv.slice(2);
 
@@ -126,14 +127,14 @@ const columns = [
     id: 'weight',
     label: 'W',
     private: true,
-    data: (b) => {},
+    data: (b) => (''),
     format: (c) => format(c, 0.01)
   }
 ].filter(validateColumn)
 
 const coinFilter = (c, b) => {
-  if(b.symbol === 'comp')
-    return c.id === "compound-governance-token"
+  if (pairs[b.symbol])
+    return c.id === pairs[b.symbol]
   return c.symbol === b.symbol
 }
 
