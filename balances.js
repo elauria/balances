@@ -60,8 +60,13 @@ const getFooter = async (columns, rows, balances) => {
   total[0] = `Total (${rows.length})`;
   total[2] = format(total[2]+usd[1]);
   total[3] = format(total[2]/btcPrice.data.bitcoin.usd, 0.000001)
-  total[5] = '% Risked:';
-  total[6] = format(100/total[2]*(total[2]-usd[1]));
+  total[6] = '% Risked:';
+  total[7] = format(100/total[2]*(total[2]-usd[1]));
+  const weightIndex = columns.findIndex(c => c.id === 'weight');
+  const btcValueIndex = columns.findIndex(c => c.id === 'btcValue');
+  for (const row of [...rows, usd]) {
+    row[weightIndex] = format(100/total[btcValueIndex] * row[btcValueIndex], 0.01) + '%'
+  }
   return [usd, total];
 }
 
@@ -117,12 +122,19 @@ const columns = [
     data: (b) => b.coingecko ? b.coingecko.btc.price_change_percentage_7d_in_currency : '',
     format: (c) => format(c, 0.01, true)
   },
+  {
+    id: 'weight',
+    label: 'W',
+    private: true,
+    data: (b) => {},
+    format: (c) => format(c, 0.01)
+  }
 ].filter(validateColumn)
 
-const coinFilter = (c) => {
-  if(balance.symbol === 'comp')
+const coinFilter = (c, b) => {
+  if(b.symbol === 'comp')
     return c.id === "compound-governance-token"
-  return c.symbol === balance.symbol
+  return c.symbol === b.symbol
 }
 
 const getBalances = async () => {
@@ -148,7 +160,7 @@ const addCoingeckoData = async (balances) => {
     const CoinGeckoClient = new CoinGecko();
     const {data} = await CoinGeckoClient.coins.list();
     for (const balance of balances) {
-      balance.coingecko = data.filter(coinFilter)[0]
+      balance.coingecko = data.filter((c) => coinFilter(c, balance))[0]
       if (!balance.coingecko)
         throw `Couldn't find Coingeck data for ${balance.symbol}`
     }
