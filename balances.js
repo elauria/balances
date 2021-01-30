@@ -143,15 +143,14 @@ const getBalances = async () => {
   for (const e of exchanges) {
     const exchange = getExchange(e.id, e.params);
     let { info, ...result } = await exchange.fetchBalance();
-    const b = Object
-      .keys(result)
-      .filter(symbol => !!result[symbol].total)
-      .map(symbol => {
-        symbol = symbol.toLowerCase()
-        if (!balances[symbol])
-          balances[symbol] = {symbol, balance: 0};
-        balances[symbol].balance += result[symbol.toUpperCase()].total
-      });
+    Object
+      .keys(result.total)
+      .forEach(k => {
+        if (!result.total[k]) return;
+        if (!balances[k])
+          balances[k] = {symbol:k.toLowerCase(), balance:0};
+        balances[k].balance += result.total[k];
+      })
   }
   return Object.keys(balances).map(b => balances[b]);
 }
@@ -163,7 +162,7 @@ const addCoingeckoData = async (balances) => {
     for (const balance of balances) {
       balance.coingecko = data.filter((c) => coinFilter(c, balance))[0]
       if (!balance.coingecko)
-        throw `Couldn't find Coingeck data for ${balance.symbol}`
+        throw `Couldn't find Coingecko data for ${balance.symbol}`
     }
     const usdPrices = await CoinGeckoClient.coins.markets({
       ids: balances.map(c => c.coingecko.id),
