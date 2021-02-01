@@ -1,4 +1,5 @@
 {
 	"ftt": "ftx-token",
-	"comp": "compound-governance-token"
+	"comp": "compound-governance-token",
+	"uni": "uniswap"
 }
