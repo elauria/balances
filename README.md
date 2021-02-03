@@ -10,11 +10,12 @@ npm i
 Add your read-only exchange keys to an .env file of format:
 
 ```
-> EXCHANGENAME_API_KEY=...
-> EXCHANGENAME_SECRET=
+EXCHANGENAME_API_KEY=
+EXCHANGENAME_SECRET=
 ```
+[ccxt]: github.com/ccxt/ccxt
 
-Add a list of exchanges with to env.js file:
+Add a list of exchanges with id based on [ccxt] to env.js file:
 
 ```JavaScript
 module.exports = {
