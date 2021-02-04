@@ -9,7 +9,7 @@
   "author": "Emanuel Lauria",
   "license": "GPL-3.0-or-later",
   "dependencies": {
-    "ccxt": "^1.41.5",
+    "ccxt": "^1.41.60",
     "chalk": "^4.1.0",
     "coingeckojs": "^1.0.7",
     "dotenv": "^8.2.0",
