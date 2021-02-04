@@ -6,6 +6,11 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "husky": {
+    "hooks": {
+      "pre-commit": "pretty-quick --staged"
+    }
+  },
   "author": "Emanuel Lauria",
   "license": "GPL-3.0-or-later",
   "dependencies": {
@@ -14,5 +19,9 @@
     "coingeckojs": "^1.0.7",
     "dotenv": "^8.2.0",
     "table": "^6.0.7"
+  },
+  "devDependencies": {
+    "husky": "^4.3.8",
+    "pretty-quick": "^3.1.0"
   }
 }
