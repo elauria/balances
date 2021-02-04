@@ -1,21 +1,20 @@
 # Balances
 
-Show's aggregate balances from multiple exchanges on an ascii table
+Show aggregated balances from multiple crypto exchanges with an ASCII table.
 
 # Setup
 
 ```shell
 npm i
 ```
-Add your read-only exchange keys to an .env file of format:
+Add your read-only exchange keys to an `env` file using this format:
 
 ```
 EXCHANGENAME_API_KEY=
 EXCHANGENAME_SECRET=
 ```
-[ccxt]: github.com/ccxt/ccxt
 
-Add a list of exchanges with id based on [ccxt] to env.js file:
+Add a list of exchanges with ID (as per [ccxt](https://github.com/ccxt/ccxt)) to env.js file:
 
 ```JavaScript
 module.exports = {
@@ -23,8 +22,8 @@ module.exports = {
 		{
 			id: 'ftx',
 			params: {
-	      headers: { "FTX-SUBACCOUNT": "my-subaccount" },
-	    }
+				headers: { "FTX-SUBACCOUNT": "my-subaccount" },
+			}
 		},
 		{
 			id: 'binance',
