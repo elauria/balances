@@ -1,5 +1,5 @@
 const ccxt = require("ccxt");
-const { exchanges } = require("./env");
+const { exchanges } = require("./env.js");
 require("dotenv").config();
 let env = {};
 exchanges.forEach((exchange) => {
