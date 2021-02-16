@@ -14,6 +14,9 @@ exports.getExchange = (name, params) => {
     enableRateLimit: true,
     apiKey,
     secret,
+    options: {
+      adjustForTimeDifference: true,
+    },
     ...params,
   };
   const exchange = new ccxt[name](params);
