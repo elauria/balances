@@ -1,4 +1,4 @@
-const { exchanges } = require("./env");
+const { exchanges } = require("./env.js");
 const { getExchange } = require("./ccxt");
 const { table } = require("table");
 const CoinGecko = require("coingeckojs");
