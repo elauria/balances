@@ -71,7 +71,8 @@ const getFooter = async (columns, rows, balances) => {
 };
 
 const coinFilter = (c, b) => {
-  if (pairs[b.symbol]) return c.id === pairs[b.symbol];
+  if (pairs[b.symbol])
+    return c.id === pairs[b.symbol];
   return c.symbol === b.symbol;
 };
 
