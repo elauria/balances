@@ -2,4 +2,5 @@
 env.js
 *.log
 node_modules/**
+<<<<<<< HEAD
 *.sublime-*

@@ -7,6 +7,7 @@ Show aggregated balances from multiple crypto exchanges with an ASCII table.
 ```shell
 npm i
 ```
+
 Add your read-only exchange keys to an `.env` file using this format:
 
 ```
@@ -36,6 +37,23 @@ module.exports = {
 
 ```shell
 node balances --help
+```
+
+# Troubleshooting
+
+```
+Couldn't find Coingecko data for XYZ
+```
+
+The script was unable to find coin XYZ in CoinGecko's API, due to a missmatch between the symbol that your exchange is using and the symbol that Coingecko is using (symbols in Coingecko are not unique and may vary greatly).
+
+Find the correct 'id' in [Coingecko](https://www.coingecko.com/api/documentations/v3#/coins/get_coins_list) and add it to pairs.json:
+
+```
+{
+	...
+	XYZ: <coingecko id>
+}
 ```
 
 Enjoy!

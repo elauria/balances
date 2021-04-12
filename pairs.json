@@ -1,5 +1,6 @@
 {
-	"ftt": "ftx-token",
-	"comp": "compound-governance-token",
-	"uni": "uniswap"
+  "ftt": "ftx-token",
+  "comp": "compound-governance-token",
+  "uni": "uniswap",
+  "iota": "miota"
 }
