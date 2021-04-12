@@ -7,7 +7,7 @@ Show aggregated balances from multiple crypto exchanges with an ASCII table.
 ```shell
 npm i
 ```
-Add your read-only exchange keys to an `env` file using this format:
+Add your read-only exchange keys to an `.env` file using this format:
 
 ```
 EXCHANGENAME_API_KEY=
