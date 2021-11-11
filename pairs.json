@@ -2,5 +2,6 @@
   "ftt": "ftx-token",
   "comp": "compound-governance-token",
   "uni": "uniswap",
-  "iota": "miota"
+  "iota": "miota",
+  "avax": "avalanche-2"
 }
